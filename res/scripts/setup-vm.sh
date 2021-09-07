@@ -6,6 +6,8 @@ sudo apt update && \
     sudo apt upgrade -y && 
     sudo apt autoremove -y
 
+sudo apt install byobu -y
+
 # SECTION
 # Install Node and NPM
 curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh -o install_nvm.sh
@@ -20,8 +22,8 @@ nvm install 16.8.0 -y && \
 
 # SECTION
 # Project install and setup
-git clone https://github.com/bananabrann/chat-golem-9000.git
-cd chat-golem-9000
+git clone https://github.com/bananabrann/chat-golem.git
+cd chat-golem
 mv .env.example .env
 npm i
 npm run build
