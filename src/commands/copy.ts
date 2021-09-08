@@ -41,7 +41,7 @@ module.exports = {
       discordAdmin,
       exemplarKnight,
       roundtableKnight,
-      outriderKnight
+      outriderKnight,
     ]);
     let targetMessage: Message;
     let targetChannel: TextChannel;
@@ -84,21 +84,12 @@ module.exports = {
 
       process.stdout.write(`OK\n`);
     } catch (error: unknown) {
-      if (error instanceof DiscordAPIError) {
-        process.stdout.write(`BAD OPTIONS\n`);
-
-        interaction.reply({
-          content: `${error.message}\n\nTip from Q: **This is likely due to an invalid message ID.**`,
-          ephemeral: true,
-        });
-      } else {
-        process.stdout.write(`ERROR\n`);
-        console.error(error);
-        interaction.reply({
-          content: `${error}\n\nThis is an unhandled error. I've logged this, but **please report this to Q.**`,
-          ephemeral: true,
-        });
-      }
+      process.stdout.write(`ERROR or BAD OPTIONS\n`);
+      console.error(error);
+      interaction.reply({
+        content: `${error}\n\nAn error happened. Is your message ID valid?\nI've logged this, but if you think this is a bug, **please report this to Q.**`,
+        ephemeral: true,
+      });
     }
   },
 };
