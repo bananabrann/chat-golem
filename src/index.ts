@@ -13,7 +13,7 @@ import GreetingMessage from "./classes/GreetingMessage";
 import CommandRegistrar, {
   ICommandRegistrarCommand,
 } from "./classes/CommandRegistrar";
-import Utils from "./utils";
+import DirectMessage from "./classes/DirectMessage";
 
 const CHANNEL_ID_HANGOUT: string = "745780665865207889";
 const CHANNEL_ID_DEV: string = "881875634018734130";
@@ -27,7 +27,16 @@ const clientOptions: ClientOptions = {
     "GUILD_MESSAGE_REACTIONS",
     "GUILD_EMOJIS_AND_STICKERS",
     "GUILD_MESSAGES",
+    "DIRECT_MESSAGES",
+    "DIRECT_MESSAGE_TYPING",
   ],
+  /*
+    NOTE -
+    On Discord API v8 and later, DM Channels do not emit the CHANNEL_CREATE event,
+    which means discord.js is unable to cache them automatically. In order for your
+    bot to receive DMs, the CHANNEL partial must be enabled.
+  */
+  partials: ["CHANNEL"],
 };
 
 const commandRegistrar: CommandRegistrar = new CommandRegistrar();
@@ -42,6 +51,13 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message: Message) => {
+  if (message.author.bot) return; // Message is itself
+  if (!message.guild) {
+    // Message is a DM
+    message.reply(DirectMessage.defaultResponse);
+    DirectMessage.captureMessage(message);
+  }
+
   // DEV --
   if (message.mentions.users.has(client.user!.id) && !message.author.bot) {
   }
