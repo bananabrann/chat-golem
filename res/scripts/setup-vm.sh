@@ -25,8 +25,7 @@ nvm install 16.8.0 -y && \
 git clone https://github.com/bananabrann/chat-golem.git
 cd chat-golem
 mv .env.example .env
-npm i
-npm run build
+npm install
 
 # SECTION 
 # FIN
