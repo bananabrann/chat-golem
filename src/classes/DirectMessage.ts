@@ -10,7 +10,11 @@ export default class DirectMessage {
   public static captureMessage(message: Message) {
     const uuid: string = uuidv4();
     const logMessage: string = `[${moment()}]\n\n${message.content}`;
-    process.stdout.write(`[${moment()}] ${message.author.tag} sent a DM, capturing it to ${uuid.slice(-5)}... `); // pretiier-ignore
+    process.stdout.write(
+      `[${moment()}] ${
+        message.author.tag
+      } sent a DM, capturing it to ${uuid.slice(-5)}... `
+    ); // pretiier-ignore
 
     fs.writeFile(
       `res/dms/${uuid}.dm.txt`,
