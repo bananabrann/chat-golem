@@ -14,6 +14,7 @@ import CommandRegistrar, {
   ICommandRegistrarCommand,
 } from "./classes/CommandRegistrar";
 import DirectMessage from "./classes/DirectMessage";
+import SuggestionMessage from "./classes/SuggestionMessage";
 
 const CHANNEL_ID_HANGOUT: string = "745780665865207889";
 const CHANNEL_ID_DEV: string = "881875634018734130";
@@ -52,15 +53,22 @@ client.on("ready", () => {
 
 client.on("messageCreate", async (message: Message) => {
   if (message.author.bot) return; // Message is itself
+
   if (!message.guild) {
     // Message is a DM
     message.reply(DirectMessage.defaultResponse);
     DirectMessage.captureMessage(message);
   }
 
-  // DEV --
-  if (message.mentions.users.has(client.user!.id) && !message.author.bot) {
+  if (message.channel.id == process.env.CHANNEL_ID_SUGGESTIONS) {
+    // Message is in #suggestions
+    const suggestionMessage: SuggestionMessage = new SuggestionMessage(message);
+    suggestionMessage.react();
   }
+
+  // DEV --
+  // if (message.mentions.users.has(client.user!.id) && !message.author.bot) {
+  // }
   // ------
 });
 
