@@ -39,3 +39,6 @@ This project uses a combination of running on bananabrann's computer and a night
 
 ### Updating Existing Infrastructure
 > Readme is a work in progress.
+
+# Contributing
+Wow, thanks for your interest! All contributions, no matter how big or small, are super appreciated. Please see the [contribution guide](./CONTRIBUTING.md) for more info.
