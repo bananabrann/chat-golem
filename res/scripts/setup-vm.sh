@@ -1,3 +1,4 @@
+# This script prepares and organizes the host computer with all necessary packages and tools.
 
 # SECTION
 # Setup and initialization

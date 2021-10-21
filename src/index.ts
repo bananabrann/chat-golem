@@ -10,11 +10,11 @@ import {
 } from "discord.js";
 import moment from "moment";
 import GreetingMessage from "./classes/GreetingMessage";
-import CommandRegistrar, {
-  ICommandRegistrarCommand,
-} from "./classes/CommandRegistrar";
+import CommandRegistrar, { ICommandRegistrarCommand, } from "./classes/CommandRegistrar"; // prettier-ignore
 import DirectMessage from "./classes/DirectMessage";
 import SuggestionMessage from "./classes/SuggestionMessage";
+import { Database } from "sqlite";
+import { openDb } from "./db";
 
 const CHANNEL_ID_HANGOUT: string = "745780665865207889";
 const CHANNEL_ID_DEV: string = "881875634018734130";
@@ -39,6 +39,8 @@ const clientOptions: ClientOptions = {
   */
   partials: ["CHANNEL"],
 };
+
+const db: Database = openDb()
 
 const commandRegistrar: CommandRegistrar = new CommandRegistrar();
 commandRegistrar.publishCommands();
