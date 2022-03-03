@@ -23,8 +23,8 @@ export default class CommandRegistrar {
   private commandFiles: string[];
 
   constructor() {
-    process.stdout.write(
-      `[${moment()}] Construct command registrar and find commands... `
+    console.log(
+      `[${moment()}] Constructing command registrar and finding commands ... `
     );
     this.commandDir = `${__dirname}/../commands`;
     this.commands = [];
@@ -35,8 +35,8 @@ export default class CommandRegistrar {
     for (const file of this.commandFiles) {
       const command: ICommandRegistrarCommand = require(`${this.commandDir}/${file}`);
       this.commands.push(command.data.toJSON());
+      console.log(`\t${file} found`);
     }
-    process.stdout.write("OK\n");
   }
 
   public getCommandDir(): string {
@@ -67,8 +67,8 @@ export default class CommandRegistrar {
 
     (async () => {
       try {
-        process.stdout.write(
-          `[${moment()}] Refreshing application commands... `
+        console.log(
+          `[${moment()}] Sending slash commands to Discord's API ... `
         );
         await rest.put(
           Routes.applicationGuildCommands(
@@ -77,7 +77,7 @@ export default class CommandRegistrar {
           ),
           { body: this.commands }
         );
-        process.stdout.write("OK\n");
+        
       } catch (err) {
         console.error(err);
       }

@@ -15,6 +15,8 @@ import DirectMessage from "./classes/DirectMessage";
 import SuggestionMessage from "./classes/SuggestionMessage";
 import { Database } from "sqlite";
 import { openDb } from "./db";
+import Utils from "./utils";
+import ThinkBomb from "./classes/ThinkBomb";
 
 const CHANNEL_ID_HANGOUT: string = "745780665865207889";
 const CHANNEL_ID_DEV: string = "881875634018734130";
@@ -40,7 +42,11 @@ const clientOptions: ClientOptions = {
   partials: ["CHANNEL"],
 };
 
+<<<<<<< HEAD
 const db: Database = openDb()
+=======
+const db: Database = openDb();
+>>>>>>> dev
 
 const commandRegistrar: CommandRegistrar = new CommandRegistrar();
 commandRegistrar.publishCommands();
@@ -68,10 +74,13 @@ client.on("messageCreate", async (message: Message) => {
     suggestionMessage.react();
   }
 
-  // DEV --
-  // if (message.mentions.users.has(client.user!.id) && !message.author.bot) {
-  // }
-  // ------
+  if (
+    message.content.toLowerCase().includes(":think") ||
+    message.content.toLowerCase().includes("think:") ||
+    message.content.includes("🤔")
+  ) {
+    ThinkBomb.reactThinkBomb(message);
+  }
 });
 
 client.on("interactionCreate", async (interaction: Interaction) => {
