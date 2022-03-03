@@ -2,10 +2,15 @@ require("dotenv").config();
 import {
   Client,
   ClientOptions,
+  Collection,
   CommandInteraction,
+  Emoji,
+  GuildEmoji,
+  GuildEmojiManager,
   GuildMember,
   Interaction,
   Message,
+  Snowflake,
   TextChannel,
 } from "discord.js";
 import moment from "moment";
@@ -15,6 +20,7 @@ import DirectMessage from "./classes/DirectMessage";
 import SuggestionMessage from "./classes/SuggestionMessage";
 import { Database } from "sqlite";
 import { openDb } from "./db";
+import Utils from "./utils";
 
 const CHANNEL_ID_HANGOUT: string = "745780665865207889";
 const CHANNEL_ID_DEV: string = "881875634018734130";
@@ -40,7 +46,7 @@ const clientOptions: ClientOptions = {
   partials: ["CHANNEL"],
 };
 
-const db: Database = openDb()
+const db: Database = openDb();
 
 const commandRegistrar: CommandRegistrar = new CommandRegistrar();
 commandRegistrar.publishCommands();
@@ -68,10 +74,34 @@ client.on("messageCreate", async (message: Message) => {
     suggestionMessage.react();
   }
 
-  // DEV --
-  // if (message.mentions.users.has(client.user!.id) && !message.author.bot) {
-  // }
-  // ------
+  if (
+    message.content.toLowerCase().includes(":think") ||
+    message.content.toLowerCase().includes("think:") ||
+    message.content.includes("🤔")
+  ) {
+    // prettier-ignore
+    const emojiManager: GuildEmojiManager | null = message.guild?.emojis ?? null;
+    let customThinkEmojiIds: string[] = [];
+
+
+    if (emojiManager) {
+      // Harvest all the emojis and organize them as an interpretable string
+      for (const [key, value] of emojiManager.cache.entries()) {
+        if (value.name?.toLocaleLowerCase().includes("think")) {
+          // prettier-ignore
+          const s: string = `<${value.animated ? "a" : ""}:${value.name}:${key}>`;
+          customThinkEmojiIds.push(s);
+        }
+      }
+
+      // Shuffle and cap emojis (Discord has a reaction per message limit)
+      // then react to the message
+      customThinkEmojiIds = Utils.shuffle(customThinkEmojiIds).slice(0, 20);
+      customThinkEmojiIds.forEach((e) => {
+        message.react(e);
+      });
+    }
+  }
 });
 
 client.on("interactionCreate", async (interaction: Interaction) => {
