@@ -42,11 +42,7 @@ const clientOptions: ClientOptions = {
   partials: ["CHANNEL"],
 };
 
-<<<<<<< HEAD
-const db: Database = openDb()
-=======
 const db: Database = openDb();
->>>>>>> dev
 
 const commandRegistrar: CommandRegistrar = new CommandRegistrar();
 commandRegistrar.publishCommands();
