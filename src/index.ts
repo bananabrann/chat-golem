@@ -2,15 +2,10 @@ require("dotenv").config();
 import {
   Client,
   ClientOptions,
-  Collection,
   CommandInteraction,
-  Emoji,
-  GuildEmoji,
-  GuildEmojiManager,
   GuildMember,
   Interaction,
   Message,
-  Snowflake,
   TextChannel,
 } from "discord.js";
 import moment from "moment";
@@ -21,6 +16,7 @@ import SuggestionMessage from "./classes/SuggestionMessage";
 import { Database } from "sqlite";
 import { openDb } from "./db";
 import Utils from "./utils";
+import ThinkBomb from "./classes/ThinkBomb";
 
 const CHANNEL_ID_HANGOUT: string = "745780665865207889";
 const CHANNEL_ID_DEV: string = "881875634018734130";
@@ -79,28 +75,7 @@ client.on("messageCreate", async (message: Message) => {
     message.content.toLowerCase().includes("think:") ||
     message.content.includes("🤔")
   ) {
-    // prettier-ignore
-    const emojiManager: GuildEmojiManager | null = message.guild?.emojis ?? null;
-    let customThinkEmojiIds: string[] = [];
-
-
-    if (emojiManager) {
-      // Harvest all the emojis and organize them as an interpretable string
-      for (const [key, value] of emojiManager.cache.entries()) {
-        if (value.name?.toLocaleLowerCase().includes("think")) {
-          // prettier-ignore
-          const s: string = `<${value.animated ? "a" : ""}:${value.name}:${key}>`;
-          customThinkEmojiIds.push(s);
-        }
-      }
-
-      // Shuffle and cap emojis (Discord has a reaction per message limit)
-      // then react to the message
-      customThinkEmojiIds = Utils.shuffle(customThinkEmojiIds).slice(0, 20);
-      customThinkEmojiIds.forEach((e) => {
-        message.react(e);
-      });
-    }
+    ThinkBomb.reactThinkBomb(message);
   }
 });
 
