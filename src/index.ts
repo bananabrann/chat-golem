@@ -18,8 +18,8 @@ import { openDb } from "./db";
 import Utils from "./utils";
 import ThinkBomb from "./classes/ThinkBomb";
 
-const CHANNEL_ID_HANGOUT: string = "745780665865207889";
-const CHANNEL_ID_DEV: string = "881875634018734130";
+const CHANNEL_ID_HANGOUT: string = "874330759035486298";
+const CHANNEL_ID_DEV: string = "";
 const IS_PROD: boolean = process.env.ENV === "prod";
 const CHANNEL_BASE_ID: string = IS_PROD ? CHANNEL_ID_HANGOUT : CHANNEL_ID_DEV;
 
